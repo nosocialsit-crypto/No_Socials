@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-white: #FFFFFF;
+  --color-black: #1A1A1A;
+  --color-coral: #F47B5B;
+  --color-pink: #E8264A;
+  --color-gray-light: #F5F5F5;
+  --color-gray-mid: #9A9A9A;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: #FFFFFF;
+  color: #1A1A1A;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, #F47B5B, #E8264A);
+}
+
+.brand-gradient-text {
+  background: linear-gradient(135deg, #F47B5B, #E8264A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Unified page container — used in every section */
+.pg {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
+}
