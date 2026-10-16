@@ -14,8 +14,11 @@ export default function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-black/5"
     >
-      <div className="pg flex items-center justify-between py-4">
-        <img src="/logo.png" alt="Nosocials" className="h-8 w-auto" />
+      <div
+        className="pg flex items-center justify-between"
+        style={{ paddingTop: '14px', paddingBottom: '14px' }}
+      >
+        <img src="/logo.png" alt="Nosocials" className="h-11 w-auto" />
 
         <ul className="hidden md:flex items-center gap-10 text-sm font-medium text-black">
           <li><a href="#services" className="hover:text-coral transition-colors">Services</a></li>

@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { getLenis } from '../hooks/useLenis'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -35,7 +36,7 @@ export default function Work() {
       scrollTrigger: { trigger: heading, start: 'top 85%' },
     })
 
-    gsap.to(strip, {
+    const tween = gsap.to(strip, {
       x: () => -(strip.scrollWidth - strip.parentElement.offsetWidth),
       ease: 'none',
       scrollTrigger: {
@@ -48,6 +49,66 @@ export default function Work() {
         anticipatePin: 1,
       },
     })
+    const st = tween.scrollTrigger
+
+    // drag / swipe the strip: converts horizontal drag into page scroll,
+    // so dragging and scrolling always drive the same position
+    const pxPerScroll = () => (strip.scrollWidth - strip.parentElement.offsetWidth) / (st.end - st.start)
+    const currentScroll = () => getLenis()?.scroll ?? window.scrollY
+    const scrollToClamped = (target, opts) => {
+      const current = currentScroll()
+      // never scroll past the end of the strip, never pull the page back above it
+      const clamped = gsap.utils.clamp(Math.min(current, st.start), Math.max(current, st.end), target)
+      const lenis = getLenis()
+      if (lenis) lenis.scrollTo(clamped, opts)
+      else window.scrollTo(0, clamped)
+    }
+
+    let dragging = false
+    let lastX = 0
+    let lastT = 0
+    let velocity = 0
+
+    const onDown = (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      dragging = true
+      lastX = e.clientX
+      lastT = performance.now()
+      velocity = 0
+      strip.setPointerCapture(e.pointerId)
+      strip.style.cursor = 'grabbing'
+    }
+    const onMove = (e) => {
+      if (!dragging) return
+      const now = performance.now()
+      const dx = e.clientX - lastX
+      velocity = dx / Math.max(1, now - lastT)
+      lastX = e.clientX
+      lastT = now
+      scrollToClamped(currentScroll() - dx / pxPerScroll(), { immediate: true })
+    }
+    const onUp = (e) => {
+      if (!dragging) return
+      dragging = false
+      strip.style.cursor = 'grab'
+      if (strip.hasPointerCapture(e.pointerId)) strip.releasePointerCapture(e.pointerId)
+      // flick: keep gliding in the drag direction
+      if (e.type === 'pointerup' && Math.abs(velocity) > 0.2) {
+        scrollToClamped(currentScroll() - (velocity * 300) / pxPerScroll(), { duration: 0.8 })
+      }
+    }
+
+    strip.addEventListener('pointerdown', onDown)
+    strip.addEventListener('pointermove', onMove)
+    strip.addEventListener('pointerup', onUp)
+    strip.addEventListener('pointercancel', onUp)
+
+    return () => {
+      strip.removeEventListener('pointerdown', onDown)
+      strip.removeEventListener('pointermove', onMove)
+      strip.removeEventListener('pointerup', onUp)
+      strip.removeEventListener('pointercancel', onUp)
+    }
   }, { scope: sectionRef })
 
   return (
@@ -79,6 +140,9 @@ export default function Work() {
             alignItems: 'stretch',
             paddingLeft: 'max(1.5rem, calc((100vw - 1200px) / 2 + clamp(1.5rem, 5vw, 5rem)))',
             paddingRight: '4rem',
+            cursor: 'grab',
+            userSelect: 'none',
+            touchAction: 'pan-y',
           }}
         >
           {projects.map((p, i) => (

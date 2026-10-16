@@ -28,15 +28,15 @@ export default function Services() {
     const heading = sectionRef.current.querySelector('.services-heading')
     const cards = sectionRef.current.querySelectorAll('.service-card')
     gsap.from(heading, { y: 50, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: heading, start: 'top 85%' } })
-    gsap.from(cards,   { y: 70, opacity: 0, stagger: 0.15, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: cards[0], start: 'top 80%' } })
+    gsap.from(cards,   { y: 30, opacity: 0, stagger: 0.1, duration: 0.6, delay: 0.2, ease: 'power3.out', scrollTrigger: { trigger: heading, start: 'top 85%' } })
   }, { scope: sectionRef })
 
   return (
-    <section id="services" ref={sectionRef} className="bg-white" style={{ paddingTop: '6rem', paddingBottom: '6rem' }}>
+    <section id="services" ref={sectionRef} className="bg-white" style={{ paddingTop: '4rem', paddingBottom: '3rem' }}>
       <div style={pgStyle}>
 
         {/* heading */}
-        <div className="services-heading" style={{ marginBottom: '3.5rem' }}>
+        <div className="services-heading" style={{ marginBottom: '2.5rem' }}>
           <p className="font-semibold tracking-widest uppercase text-gray-mid" style={{ fontSize: '11px', marginBottom: '1rem' }}>
             What we do
           </p>
@@ -51,7 +51,7 @@ export default function Services() {
           {services.map((s) => (
             <div
               key={s.number}
-              className="service-card rounded-2xl transition-all duration-300 cursor-default"
+              className="service-card rounded-2xl cursor-default"
               style={{ border: '1.5px solid #E8E8E8', padding: '2.5rem' }}
             >
               <span className="brand-gradient-text font-bold tracking-widest" style={{ fontSize: '11px' }}>

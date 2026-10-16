@@ -34,18 +34,24 @@ export default function About() {
     const textLines = pinRef.current.querySelectorAll('.about-line')
     const statsEls  = pinRef.current.querySelectorAll('.about-stat')
 
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: pinRef.current, start: 'top top', end: '+=700', scrub: 1, pin: true, anticipatePin: 1 },
+    // lines reveal while the section scrolls into view, so it never shows up empty
+    gsap.from(textLines, {
+      y: 40, opacity: 0, stagger: 0.35, ease: 'power2.out',
+      scrollTrigger: { trigger: pinRef.current, start: 'top 80%', end: 'top 15%', scrub: 1 },
     })
-    tl.from(textLines, { y: 40, opacity: 0, stagger: 0.35, ease: 'power2.out' })
-      .from(statsEls,  { y: 30, opacity: 0, stagger: 0.2,  ease: 'power2.out' }, '-=0.3')
+
+    // stats reveal while the section is pinned
+    gsap.from(statsEls, {
+      y: 30, opacity: 0, stagger: 0.2, ease: 'power2.out',
+      scrollTrigger: { trigger: pinRef.current, start: 'top top', end: '+=500', scrub: 1, pin: true, anticipatePin: 1 },
+    })
   }, { scope: sectionRef })
 
   return (
     <section id="about" ref={sectionRef} className="bg-black">
       <div
         ref={pinRef}
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '6rem', paddingBottom: '6rem' }}
+        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: '6.5rem', paddingBottom: '4rem' }}
       >
         <div style={pgStyle}>
 
