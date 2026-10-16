@@ -36,86 +36,104 @@ export default function Work() {
       scrollTrigger: { trigger: heading, start: 'top 85%' },
     })
 
-    const tween = gsap.to(strip, {
-      x: () => -(strip.scrollWidth - strip.parentElement.offsetWidth),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        pin: true,
-        scrub: 1,
-        start: 'top top',
-        end: () => '+=' + strip.scrollWidth,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      },
-    })
-    const st = tween.scrollTrigger
+    const mm = gsap.matchMedia()
 
-    // drag / swipe the strip: converts horizontal drag into page scroll,
-    // so dragging and scrolling always drive the same position
-    const pxPerScroll = () => (strip.scrollWidth - strip.parentElement.offsetWidth) / (st.end - st.start)
-    const currentScroll = () => getLenis()?.scroll ?? window.scrollY
-    const scrollToClamped = (target, opts) => {
-      const current = currentScroll()
-      // never scroll past the end of the strip, never pull the page back above it
-      const clamped = gsap.utils.clamp(Math.min(current, st.start), Math.max(current, st.end), target)
-      const lenis = getLenis()
-      if (lenis) lenis.scrollTo(clamped, opts)
-      else window.scrollTo(0, clamped)
-    }
+    // desktop: section pins while the strip slides.
+    // tablet / mobile: no pin (it leaves a big empty screen) — the strip slides
+    // as it scrolls past instead.
+    mm.add({ isDesktop: '(min-width: 1024px)', isSmall: '(max-width: 1023px)' }, (ctx) => {
+      const { isDesktop } = ctx.conditions
+      const tween = gsap.to(strip, {
+        x: () => -(strip.scrollWidth - strip.parentElement.offsetWidth),
+        ease: 'none',
+        scrollTrigger: isDesktop
+          ? {
+              trigger: sectionRef.current,
+              pin: true,
+              scrub: 1,
+              start: 'top top',
+              end: () => '+=' + strip.scrollWidth,
+              invalidateOnRefresh: true,
+              anticipatePin: 1,
+            }
+          : {
+              trigger: strip,
+              scrub: 1,
+              start: 'top 85%',
+              end: 'bottom 15%',
+              invalidateOnRefresh: true,
+            },
+      })
+      const st = tween.scrollTrigger
 
-    let dragging = false
-    let lastX = 0
-    let lastT = 0
-    let velocity = 0
-
-    const onDown = (e) => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return
-      dragging = true
-      lastX = e.clientX
-      lastT = performance.now()
-      velocity = 0
-      strip.setPointerCapture(e.pointerId)
-      strip.style.cursor = 'grabbing'
-    }
-    const onMove = (e) => {
-      if (!dragging) return
-      const now = performance.now()
-      const dx = e.clientX - lastX
-      velocity = dx / Math.max(1, now - lastT)
-      lastX = e.clientX
-      lastT = now
-      scrollToClamped(currentScroll() - dx / pxPerScroll(), { immediate: true })
-    }
-    const onUp = (e) => {
-      if (!dragging) return
-      dragging = false
-      strip.style.cursor = 'grab'
-      if (strip.hasPointerCapture(e.pointerId)) strip.releasePointerCapture(e.pointerId)
-      // flick: keep gliding in the drag direction
-      if (e.type === 'pointerup' && Math.abs(velocity) > 0.2) {
-        scrollToClamped(currentScroll() - (velocity * 300) / pxPerScroll(), { duration: 0.8 })
+      // drag / swipe the strip: converts horizontal drag into page scroll,
+      // so dragging and scrolling always drive the same position
+      const pxPerScroll = () => (strip.scrollWidth - strip.parentElement.offsetWidth) / (st.end - st.start)
+      const currentScroll = () => getLenis()?.scroll ?? window.scrollY
+      const scrollToClamped = (target, opts) => {
+        const current = currentScroll()
+        // never scroll past the end of the strip, never pull the page back above it
+        const clamped = gsap.utils.clamp(Math.min(current, st.start), Math.max(current, st.end), target)
+        const lenis = getLenis()
+        if (lenis) lenis.scrollTo(clamped, opts)
+        else window.scrollTo(0, clamped)
       }
-    }
 
-    strip.addEventListener('pointerdown', onDown)
-    strip.addEventListener('pointermove', onMove)
-    strip.addEventListener('pointerup', onUp)
-    strip.addEventListener('pointercancel', onUp)
+      let dragging = false
+      let lastX = 0
+      let lastT = 0
+      let velocity = 0
 
-    return () => {
-      strip.removeEventListener('pointerdown', onDown)
-      strip.removeEventListener('pointermove', onMove)
-      strip.removeEventListener('pointerup', onUp)
-      strip.removeEventListener('pointercancel', onUp)
-    }
+      const onDown = (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return
+        dragging = true
+        lastX = e.clientX
+        lastT = performance.now()
+        velocity = 0
+        strip.setPointerCapture(e.pointerId)
+        strip.style.cursor = 'grabbing'
+      }
+      const onMove = (e) => {
+        if (!dragging) return
+        const now = performance.now()
+        const dx = e.clientX - lastX
+        velocity = dx / Math.max(1, now - lastT)
+        lastX = e.clientX
+        lastT = now
+        scrollToClamped(currentScroll() - dx / pxPerScroll(), { immediate: true })
+      }
+      const onUp = (e) => {
+        if (!dragging) return
+        dragging = false
+        strip.style.cursor = ''
+        if (strip.hasPointerCapture(e.pointerId)) strip.releasePointerCapture(e.pointerId)
+        // flick: keep gliding in the drag direction
+        if (e.type === 'pointerup' && Math.abs(velocity) > 0.2) {
+          scrollToClamped(currentScroll() - (velocity * 300) / pxPerScroll(), { duration: 0.8 })
+        }
+      }
+
+      strip.addEventListener('pointerdown', onDown)
+      strip.addEventListener('pointermove', onMove)
+      strip.addEventListener('pointerup', onUp)
+      strip.addEventListener('pointercancel', onUp)
+
+      return () => {
+        strip.removeEventListener('pointerdown', onDown)
+        strip.removeEventListener('pointermove', onMove)
+        strip.removeEventListener('pointerup', onUp)
+        strip.removeEventListener('pointercancel', onUp)
+      }
+    })
+
+    return () => mm.revert()
   }, { scope: sectionRef })
 
   return (
     <section id="work" ref={sectionRef} className="bg-white">
 
       {/* heading */}
-      <div style={{ ...pgStyle, paddingTop: '6rem', paddingBottom: '2.5rem' }}>
+      <div className="work-heading-wrap" style={pgStyle}>
         <div className="work-heading">
           <p
             className="font-semibold tracking-widest uppercase text-gray-mid"
@@ -129,10 +147,11 @@ export default function Work() {
         </div>
       </div>
 
-      {/* horizontal scroll strip — clip only on X so cards aren't sliced vertically */}
-      <div style={{ overflowX: 'clip', paddingBottom: '5rem' }}>
+      {/* horizontal strip: pinned scroll on desktop, native swipe on smaller screens */}
+      <div className="work-strip-wrap">
         <div
           ref={stripRef}
+          className="work-strip"
           style={{
             display: 'flex',
             gap: '1.25rem',
@@ -140,9 +159,6 @@ export default function Work() {
             alignItems: 'stretch',
             paddingLeft: 'max(1.5rem, calc((100vw - 1200px) / 2 + clamp(1.5rem, 5vw, 5rem)))',
             paddingRight: '4rem',
-            cursor: 'grab',
-            userSelect: 'none',
-            touchAction: 'pan-y',
           }}
         >
           {projects.map((p, i) => (

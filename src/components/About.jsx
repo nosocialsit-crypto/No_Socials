@@ -40,18 +40,33 @@ export default function About() {
       scrollTrigger: { trigger: pinRef.current, start: 'top 80%', end: 'top 15%', scrub: 1 },
     })
 
-    // stats reveal while the section is pinned
-    gsap.from(statsEls, {
-      y: 30, opacity: 0, stagger: 0.2, ease: 'power2.out',
-      scrollTrigger: { trigger: pinRef.current, start: 'top top', end: '+=500', scrub: 1, pin: true, anticipatePin: 1 },
+    const mm = gsap.matchMedia()
+
+    // desktop: stats reveal while the section is pinned
+    mm.add('(min-width: 1024px)', () => {
+      gsap.from(statsEls, {
+        y: 30, opacity: 0, stagger: 0.2, ease: 'power2.out',
+        scrollTrigger: { trigger: pinRef.current, start: 'top top', end: '+=500', scrub: 1, pin: true, anticipatePin: 1 },
+      })
     })
+
+    // tablet / mobile: no pin (it leaves a big empty screen), just reveal
+    mm.add('(max-width: 1023px)', () => {
+      gsap.from(statsEls, {
+        y: 30, opacity: 0, stagger: 0.15, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: { trigger: statsEls[0], start: 'top 90%' },
+      })
+    })
+
+    return () => mm.revert()
   }, { scope: sectionRef })
 
   return (
     <section id="about" ref={sectionRef} className="bg-black">
       <div
         ref={pinRef}
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: '6.5rem', paddingBottom: '4rem' }}
+        className="about-pin"
+        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}
       >
         <div style={pgStyle}>
 

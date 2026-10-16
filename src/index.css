@@ -46,3 +46,53 @@ body {
   padding-left: clamp(1.5rem, 5vw, 5rem);
   padding-right: clamp(1.5rem, 5vw, 5rem);
 }
+/* ── responsive layout (unlayered on purpose: the global * reset above
+   overrides Tailwind's padding/margin utilities) ── */
+
+/* hero: content height + padding on small screens, full screen on desktop */
+.hero-sec {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+}
+
+/* about: no forced full-screen height on small screens (not pinned there) */
+.about-pin {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* work: strip slides with scroll on every size (pinned on desktop) */
+.work-heading-wrap {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+.work-strip-wrap {
+  overflow-x: clip;
+  padding-bottom: 3rem;
+}
+.work-strip {
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+@media (min-width: 1024px) {
+  .hero-sec {
+    min-height: 100vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .about-pin {
+    min-height: 100vh;
+    padding-top: 6.5rem;
+  }
+
+  .work-heading-wrap {
+    padding-top: 6rem;
+    padding-bottom: 2.5rem;
+  }
+  .work-strip-wrap {
+    padding-bottom: 5rem;
+  }
+}

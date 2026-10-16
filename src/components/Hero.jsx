@@ -38,7 +38,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white pt-20"
+      className="hero-sec relative flex flex-col items-center justify-center overflow-hidden bg-white"
     >
       <div
         ref={bgRef}
