@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLenis } from './hooks/useLenis'
 import Navbar from './components/Navbar'
+import Gallery from './components/Gallery'
 import Hero from './components/Hero'
 import Services from './components/Services'
 import About from './components/About'
@@ -17,6 +18,7 @@ export default function App() {
   return (
     <main>
       <Navbar />
+      <Gallery />
       <Hero />
       <Services />
       <About />

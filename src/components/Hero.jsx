@@ -49,22 +49,26 @@ export default function Hero() {
         }}
       />
 
-      <div className="pg relative z-10 flex flex-col items-center text-center w-full">
+      <div className="pg relative z-10 flex flex-col items-center gap-8 text-center w-full">
         <span
           ref={badgeRef}
-          className="inline-flex items-center gap-3 text-xs font-semibold tracking-widest uppercase text-gray-mid mb-10"
+          className="inline-flex items-center gap-3 text-xs font-semibold tracking-widest uppercase text-gray-mid"
         >
           Social Media Agency
           <span className="w-8 h-px brand-gradient inline-block" />
         </span>
 
-        <h1 className="font-black leading-[1.05] tracking-tight text-black mb-8 w-full">
+        <h1
+          className="font-black leading-[1.05] tracking-tight text-black w-full"
+          style={{ fontSize: 'clamp(2.8rem, 7.5vw, 6rem)' }}
+        >
           {headline.map((line, i) => (
-            <span key={i} className="overflow-hidden block">
-              <span
-                className="hero-line inline-block"
-                style={{ fontSize: 'clamp(2.8rem, 7.5vw, 6rem)' }}
-              >
+            <span
+              key={i}
+              className="overflow-hidden block"
+              style={{ paddingBottom: '0.08em', marginBottom: '-0.08em' }}
+            >
+              <span className="hero-line inline-block">
                 {i === 2 ? (
                   <span className="brand-gradient-text">{line}</span>
                 ) : (
@@ -77,7 +81,7 @@ export default function Hero() {
 
         <p
           ref={subRef}
-          className="text-base md:text-lg text-gray-mid max-w-md leading-relaxed mb-10"
+          className="text-base md:text-lg text-gray-mid max-w-lg leading-relaxed"
         >
           Managing social media so you don't have to think about it — while
           actually growing your audience.
