@@ -52,10 +52,9 @@ export default function Hero() {
       <div className="pg relative z-10 flex flex-col items-center gap-8 text-center w-full">
         <span
           ref={badgeRef}
-          className="inline-flex items-center gap-3 text-xs font-semibold tracking-widest uppercase text-gray-mid"
+          className="eyebrow"
         >
           Social Media Agency
-          <span className="w-8 h-px brand-gradient inline-block" />
         </span>
 
         <h1

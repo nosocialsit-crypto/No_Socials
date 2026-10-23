@@ -70,7 +70,7 @@ export default function About() {
       >
         <div style={pgStyle}>
 
-          <p className="font-semibold tracking-widest uppercase text-gray-mid" style={{ fontSize: '11px', marginBottom: '2.5rem' }}>
+          <p className="eyebrow" style={{ marginBottom: '2.5rem' }}>
             Our story
           </p>
 

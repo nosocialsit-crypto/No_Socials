@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '../hooks/useLenis'
+import { whatsappLink, WHATSAPP_DISPLAY } from '../config'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -42,6 +43,13 @@ const InstagramIcon = () => (
   </svg>
 )
 
+const WhatsAppIcon = () => (
+  <svg {...iconProps}>
+    <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+    <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+  </svg>
+)
+
 const LinkedInIcon = () => (
   <svg {...iconProps}>
     <rect x="3" y="3" width="18" height="18" rx="3" />
@@ -55,9 +63,10 @@ const ArrowUpIcon = () => (
   </svg>
 )
 
-const companyLinks = ['Services', 'About', 'Work']
+const companyLinks = ['Services', 'About', 'Pricing', 'Work']
 
 const contactLinks = [
+  { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi Nosocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true },
   { label: 'nosocials.it@gmail.com', href: 'mailto:nosocials.it@gmail.com', Icon: MailIcon },
   { label: 'Instagram', href: '#', Icon: InstagramIcon },
   { label: 'LinkedIn', href: '#', Icon: LinkedInIcon },
@@ -117,7 +126,9 @@ export default function Footer() {
             </h2>
           </div>
           <a
-            href="mailto:nosocials.it@gmail.com"
+            href={whatsappLink("Hi Nosocials! I'd like to start a project with you.")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="ft-cta brand-gradient text-white font-semibold rounded-full whitespace-nowrap self-start md:self-auto"
           >
             Start a project
@@ -147,8 +158,14 @@ export default function Footer() {
               We manage your social media with strategy, creativity, and a little irony.
             </p>
             <div className="flex" style={{ gap: '0.75rem', marginTop: '1.75rem' }}>
-              {contactLinks.map(({ label, href, Icon }) => (
-                <a key={label} href={href} aria-label={label} className="ft-social">
+              {contactLinks.map(({ label, href, Icon, external }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={external ? `WhatsApp ${label}` : label}
+                  className="ft-social"
+                  {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
                   <Icon />
                 </a>
               ))}
@@ -157,7 +174,7 @@ export default function Footer() {
 
           {/* company */}
           <div className="ft-reveal">
-            <p className="ft-heading font-semibold tracking-widest uppercase text-gray-mid">
+            <p className="ft-heading eyebrow">
               Company
             </p>
             <ul style={{ listStyle: 'none' }}>
@@ -174,13 +191,18 @@ export default function Footer() {
 
           {/* contact */}
           <div className="ft-reveal">
-            <p className="ft-heading font-semibold tracking-widest uppercase text-gray-mid">
+            <p className="ft-heading eyebrow">
               Contact
             </p>
             <ul style={{ listStyle: 'none' }}>
-              {contactLinks.map(({ label, href, Icon }) => (
+              {contactLinks.map(({ label, href, Icon, external }) => (
                 <li key={label} style={{ marginBottom: '0.875rem' }}>
-                  <a href={href} className="ft-link" style={{ wordBreak: 'break-all' }}>
+                  <a
+                    href={href}
+                    className="ft-link"
+                    style={{ wordBreak: 'break-all' }}
+                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                  >
                     <span className="ft-link-icon"><Icon /></span>
                     <span className="ft-link-text">{label}</span>
                   </a>

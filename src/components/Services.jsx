@@ -37,7 +37,7 @@ export default function Services() {
 
         {/* heading */}
         <div className="services-heading" style={{ marginBottom: '2.5rem' }}>
-          <p className="font-semibold tracking-widest uppercase text-gray-mid" style={{ fontSize: '11px', marginBottom: '1rem' }}>
+          <p className="eyebrow" style={{ marginBottom: '1rem' }}>
             What we do
           </p>
           <h2 className="font-black text-black leading-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>

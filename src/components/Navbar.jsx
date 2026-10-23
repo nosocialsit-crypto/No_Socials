@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { whatsappLink } from '../config'
 
 const links = [
   { href: '#services', label: 'Services' },
   { href: '#about', label: 'About' },
+  { href: '#pricing', label: 'Pricing' },
   { href: '#work', label: 'Work' },
 ]
 
@@ -37,7 +39,9 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="#contact"
+            href={whatsappLink("Hi Nosocials! I'd like to get started with your social media services.")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="brand-gradient text-white font-semibold rounded-full hover:opacity-90 transition-opacity"
             style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 24px', fontSize: '14px' }}
           >

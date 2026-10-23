@@ -30,20 +30,22 @@ export default function Gallery() {
 
     const build = () => {
       flipCtx?.revert()
-      gallery.classList.remove('gallery--final')
+      // resting layout is full-screen; scrolling shrinks it into the bento grid
+      gallery.classList.add('gallery--final')
 
       flipCtx = gsap.context(() => {
-        // temporarily add the final class to capture the final state
-        gallery.classList.add('gallery--final')
-        const flipState = Flip.getState(items)
+        // temporarily drop the final class to capture the bento grid as the target
         gallery.classList.remove('gallery--final')
+        const flipState = Flip.getState(items)
+        gallery.classList.add('gallery--final')
 
-        const flip = Flip.to(flipState, { simple: true, ease: 'expoScale(1, 5)' })
+        const flip = Flip.to(flipState, { simple: true, ease: 'expoScale(5, 1)' })
 
         gsap.timeline({
           scrollTrigger: {
             trigger: gallery,
-            start: 'center center',
+            // pin just below the fixed navbar so it never covers the gallery
+            start: () => `top ${document.querySelector('nav')?.offsetHeight ?? 0}px`,
             end: '+=100%',
             scrub: true,
             pin: wrapRef.current,
@@ -77,7 +79,7 @@ export default function Gallery() {
 
   return (
     <div ref={wrapRef} className="gallery-wrap">
-      <div ref={galleryRef} className="gallery gallery--bento">
+      <div ref={galleryRef} className="gallery gallery--bento gallery--final">
         {images.map((src) => (
           <div key={src} className="gallery__item">
             <img src={src} alt="" loading="eager" />
