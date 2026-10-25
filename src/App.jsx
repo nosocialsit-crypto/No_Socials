@@ -9,9 +9,12 @@ import Services from './components/Services'
 import About from './components/About'
 import Pricing from './components/Pricing'
 import Work from './components/Work'
+import Contact from './components/Contact'
 import Footer from './components/Footer'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
+// the phone address bar showing/hiding shouldn't re-measure the pinned sections mid-scroll
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 export default function App() {
   useLenis()
@@ -25,6 +28,7 @@ export default function App() {
       <About />
       <Pricing />
       <Work />
+      <Contact />
       <Footer />
     </main>
   )

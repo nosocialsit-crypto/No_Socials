@@ -7,6 +7,14 @@ gsap.registerPlugin(ScrollTrigger)
 
 const headline = ['We run', 'your socials.', 'Ironically.']
 
+// scroll-animation values per device (laptop values are the originals)
+//   end: pin length · swipe: slide distance in px · blur: px (0 = none, smoother on phones)
+//   wordGap: space above "Ironically." once it has risen, and between it and the paragraph
+//   wordStart: when "Ironically." starts rising (later = "your socials." has cleared further)
+const HERO_DESK = { end: '+=150%', swipe: 220, blur: 14, wordGap: 40, wordStart: 0.45 }
+const HERO_TAB = { end: '+=130%', swipe: 160, blur: 10, wordGap: 32, wordStart: 0.55 }
+const HERO_PHONE = { end: '+=110%', swipe: 110, blur: 0, wordGap: 24, wordStart: 0.65 }
+
 function HeroButtons() {
   return (
     <>
@@ -62,21 +70,46 @@ export default function Hero() {
 
     const mm = gsap.matchMedia()
 
-    // desktop: pin the hero, swipe the heading out left, bring the panel in from the right
-    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+    // same animation everywhere, tuned per device
+    mm.add({
+      desk: '(min-width: 1024px)',
+      tab: '(min-width: 768px) and (max-width: 1023px)',
+      motion: '(prefers-reduced-motion: no-preference)',
+    }, (ctx) => {
+      const { desk, tab, motion } = ctx.conditions
+
+      // reduced motion: no pin, the panel just fades up below the heading
+      if (!motion) {
+        gsap.from(panelItems, {
+          y: 30, opacity: 0, stagger: 0.12, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: panel, start: 'top 85%' },
+        })
+        return
+      }
+
+      const S = desk ? HERO_DESK : tab ? HERO_TAB : HERO_PHONE
+      const blurOut = S.blur ? `blur(${S.blur}px)` : 'blur(0px)'
       const stage = containerRef.current.querySelector('.hero-stage')
       const word = rows[rows.length - 1] // "Ironically." stays and rises to the top
       const outgoing = [badgeRef.current, ...[...rows].slice(0, -1), subRef.current, ctaRef.current]
       const NAV_H = 73
-      const WORD_TOP = NAV_H + 40 // where the word ends up, measured from the top of the pinned screen
+      const WORD_TOP = NAV_H + S.wordGap // where the word ends up, measured from the top of the pinned screen
 
       // offsetTop ignores transforms, so these stay correct mid-animation
       let rise = 0
       const measure = () => {
         const wordTop = stage.offsetTop + word.offsetTop
         rise = WORD_TOP - wordTop
-        // start the panel just under the raised word
-        panel.style.paddingTop = `${WORD_TOP + word.offsetHeight + 40 - stage.offsetTop}px`
+        // start the panel just under the raised word. `top` (not padding) because on tall
+        // phones/tablets the value is negative — the heading block sits lower than the target
+        const panelTop = WORD_TOP + word.offsetHeight + S.wordGap - stage.offsetTop
+        panel.style.top = `${panelTop}px`
+        panel.style.bottom = 'auto'
+        // empty space left under the buttons when the hero unpins — Services pulls itself
+        // up by this much (see .svc-sec in index.css) so there's no big white gap
+        const buttonsBottom = stage.offsetTop + panelTop + panel.offsetHeight
+        const blank = Math.max(0, containerRef.current.offsetHeight - buttonsBottom - 48)
+        document.documentElement.style.setProperty('--hero-blank', `${blank}px`)
       }
       measure()
       ScrollTrigger.addEventListener('refreshInit', measure)
@@ -85,7 +118,7 @@ export default function Hero() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=150%',
+          end: S.end,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -96,36 +129,30 @@ export default function Hero() {
       scrollTl
         .fromTo(outgoing,
           { x: 0, opacity: 1, filter: 'blur(0px)' },
-          { x: -220, opacity: 0, filter: 'blur(14px)', stagger: 0.12, ease: 'power2.in', immediateRender: false },
+          { x: -S.swipe, opacity: 0, filter: blurOut, stagger: 0.12, ease: 'power2.in', immediateRender: false },
         )
         .fromTo(word,
           { y: 0 },
           { y: () => rise, duration: 0.9, ease: 'power2.inOut', immediateRender: false },
-          0.45, // start once "your socials." has mostly cleared, so they don't overlap
+          S.wordStart, // start once "your socials." has mostly cleared, so they don't overlap
         )
         .set(panel, { autoAlpha: 1 }, '-=0.35')
         .fromTo(panelItems,
-          { x: 220, opacity: 0, filter: 'blur(14px)' },
+          { x: S.swipe, opacity: 0, filter: blurOut },
           { x: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.1, ease: 'power2.out' },
           '<',
         )
         .to({}, { duration: 0.4 }) // short rest before the pin releases
 
-      // wipe everything the timeline touched, so a smaller screen gets a clean layout
+      // wipe everything the timeline touched, so the next screen size starts clean
       return () => {
         ScrollTrigger.removeEventListener('refreshInit', measure)
-        panel.style.paddingTop = ''
+        panel.style.top = ''
+        panel.style.bottom = ''
+        document.documentElement.style.removeProperty('--hero-blank')
         gsap.set([...outgoing, word, ...panelItems], { clearProps: 'transform,opacity,filter' })
         gsap.set(panel, { clearProps: 'opacity,visibility' })
       }
-    })
-
-    // mobile / tablet: no pin, the panel just fades up below the heading
-    mm.add('(max-width: 1023px)', () => {
-      gsap.from(panelItems, {
-        y: 30, opacity: 0, stagger: 0.12, duration: 0.6, ease: 'power3.out',
-        scrollTrigger: { trigger: panel, start: 'top 85%' },
-      })
     })
 
     return () => mm.revert()

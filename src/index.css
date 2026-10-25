@@ -65,15 +65,22 @@ body {
   margin-top: 4rem;
   text-align: center;
 }
-/* the panel's own buttons only show on desktop, where the first pair swipes away */
+/* the panel's own buttons only show when the scroll animation runs (the first pair swipes away);
+   with reduced motion the panel sits under the heading, so they'd be a duplicate */
 .hero-panel__cta { display: none; }
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
+  /* full screen on every device so it can pin; svh doesn't jump with the phone address bar */
+  .hero-sec {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 73px 0 0;
+  }
   .hero-panel__cta { display: flex; }
   .hero-panel {
     position: absolute;
     inset: 0;
     margin-top: 0;
-    justify-content: flex-start; /* top padding is set in Hero.jsx to sit under "Ironically." */
+    justify-content: flex-start; /* its `top` is set in Hero.jsx to sit under "Ironically." */
     padding: 0 clamp(1.5rem, 5vw, 5rem);
     opacity: 0;
     visibility: hidden;
@@ -117,11 +124,15 @@ body {
   font-weight: 800;
   letter-spacing: 0.05em;
 }
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-  .svc-sec { padding: 0; }
+/* pinned layout on every device (values per size below); reduced motion keeps the grid above */
+@media (prefers-reduced-motion: no-preference) {
+  /* pull Services up over the hero's empty bottom so there's no big white gap.
+     --hero-blank is measured in Hero.jsx: the space left under the hero buttons, minus a margin */
+  .svc-sec { padding: 0; margin-top: calc(-1 * var(--hero-blank, 0px)); }
   .svc-stage {
     position: relative;
     height: 100vh;
+    height: 100svh;
     overflow: hidden;
   }
   .svc-heading {
@@ -131,10 +142,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* phones/tablets (tall screens): heading in the upper part, less empty space above it */
+    justify-content: flex-start;
+    padding-top: 14vh;
     text-align: center;
   }
-  .svc-title { font-size: clamp(3.5rem, 7.5vw, 8rem); line-height: 1.05; }
+  @media (min-width: 1024px) {
+    .svc-heading { justify-content: center; padding-top: 0; } /* laptop: centered */
+  }
+  .svc-title { line-height: 1.05; }
   .svc-track {
     position: absolute;
     top: 0;
@@ -144,10 +160,39 @@ body {
     display: block;
     z-index: 1;
   }
-  .svc-card { width: min(440px, 42%); }
   .svc-card:nth-child(odd) { margin-right: auto; }
   .svc-card:nth-child(even) { margin-left: auto; }
-  .svc-card + .svc-card { margin-top: -4rem; }
+
+  /* phone: one column with a slight left/right offset, no overlap, solid cards (no blur = smoother) */
+  .svc-title { font-size: clamp(2.2rem, 9vw, 3rem); }
+  .svc-card {
+    width: 86%;
+    padding: 1.75rem;
+    background: rgba(255, 255, 255, 0.94);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .svc-card + .svc-card { margin-top: 1.25rem; }
+
+  /* tablet */
+  @media (min-width: 768px) {
+    .svc-title { font-size: clamp(3rem, 8vw, 5rem); }
+    .svc-card {
+      width: 46%;
+      padding: 2.25rem;
+      background: rgba(255, 255, 255, 0.78);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    .svc-card + .svc-card { margin-top: -3rem; }
+  }
+
+  /* laptop (original values) */
+  @media (min-width: 1024px) {
+    .svc-title { font-size: clamp(3.5rem, 7.5vw, 8rem); }
+    .svc-card { width: min(440px, 42%); padding: 2.5rem; }
+    .svc-card + .svc-card { margin-top: -4rem; }
+  }
 }
 
 /* about: no forced full-screen height on small screens (not pinned there) */
@@ -195,6 +240,7 @@ body {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  border-radius: 1.5rem;
   border: 1.5px solid #e8e8e8;
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
@@ -415,6 +461,157 @@ body {
     grid-template-columns: repeat(3, 1fr);
     max-width: none;
   }
+}
+
+/* ── booking form (Contact.jsx) ── */
+.bk-sec {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.bk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+.bk-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.bk-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+  word-break: break-all;
+  transition: color 0.25s ease;
+}
+.bk-contact:hover { color: #E8264A; }
+.bk-contact__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 12px 24px -12px rgba(232, 38, 74, 0.6);
+  transition: transform 0.3s ease;
+}
+.bk-contact:hover .bk-contact__icon { transform: translateY(-3px) rotate(-6deg); }
+.bk-card {
+  padding: 1.5rem;
+  border-radius: 2rem;
+  border: 1.5px solid #EDEDED;
+  background: #fff;
+  box-shadow: 0 30px 60px -30px rgba(232, 38, 74, 0.35);
+}
+.bk-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem 1rem;
+}
+.bk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.bk-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6B6B6B;
+}
+.bk-req { color: #E8264A; }
+.bk-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid #EDEDED;
+  border-radius: 12px;
+  background: #FAFAFA;
+  font: inherit;
+  font-size: 15px;
+  color: #1A1A1A;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.bk-input::placeholder { color: #A8A8A8; }
+.bk-input:focus {
+  border-color: #F47B5B;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(244, 123, 91, 0.15);
+}
+.bk-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23E8264A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.bk-select:invalid { color: #A8A8A8; } /* placeholder option shown in grey */
+.bk-select option { color: #1A1A1A; }
+.bk-input[type='date'] { min-height: 50px; }
+.bk-input[type='date']:invalid { color: #A8A8A8; } /* empty → grey like the other placeholders */
+.bk-input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+.bk-textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+.bk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.bk-sent {
+  font-size: 13px;
+  font-weight: 600;
+  color: #16a34a;
+}
+.bk-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 32px;
+  border: none;
+  border-radius: 9999px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px rgba(232, 38, 74, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.bk-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -12px rgba(232, 38, 74, 0.75);
+}
+@media (min-width: 640px) {
+  .bk-card { padding: 2.25rem; }
+  .bk-form-grid { grid-template-columns: 1fr 1fr; }
+  .bk-full { grid-column: 1 / -1; }
+  .bk-submit { width: auto; }
+}
+@media (min-width: 1024px) {
+  .bk-sec { padding-top: 6rem; padding-bottom: 6rem; }
+  .bk-grid { grid-template-columns: 2fr 3fr; gap: 4rem; }
+  .bk-contacts { margin-top: 2.5rem; }
 }
 
 /* ── section eyebrow labels ("What we do", "Our story", …) ── */

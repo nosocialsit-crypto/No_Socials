@@ -25,8 +25,25 @@ export default function Services() {
 
     const mm = gsap.matchMedia()
 
-    // desktop: heading stays fixed, cards rise over it in a left/right zigzag
-    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+    // heading stays fixed, cards rise over it in a zigzag; sizes come from CSS per device
+    mm.add({
+      phone: '(max-width: 767px)',
+      motion: '(prefers-reduced-motion: no-preference)',
+    }, (ctx) => {
+      const { phone, motion } = ctx.conditions
+
+      // reduced motion: plain grid with a fade-up
+      if (!motion) {
+        gsap.from(cards, {
+          y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: track, start: 'top 85%' },
+        })
+        return
+      }
+
+      // phones get a shorter pin, so it's fewer swipes to get through
+      const pinScreens = phone ? 0.6 : 1
+
       gsap.fromTo(track,
         { y: () => window.innerHeight },
         {
@@ -35,7 +52,7 @@ export default function Services() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: () => `+=${window.innerHeight + track.offsetHeight}`,
+            end: () => `+=${window.innerHeight * pinScreens + track.offsetHeight}`,
             pin: true,
             scrub: 1,
             anticipatePin: 1,
@@ -43,23 +60,15 @@ export default function Services() {
           },
         },
       )
-      // clear the track's offset so smaller screens don't inherit it
+      // clear the track's offset so the next screen size starts clean
       return () => gsap.set(track, { clearProps: 'transform' })
-    })
-
-    // mobile / tablet / reduced motion: plain grid with a fade-up
-    mm.add('(max-width: 1023px), (prefers-reduced-motion: reduce)', () => {
-      gsap.from(cards, {
-        y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out',
-        scrollTrigger: { trigger: track, start: 'top 85%' },
-      })
     })
 
     return () => mm.revert()
   }, { scope: sectionRef })
 
   return (
-    <section id="services" ref={sectionRef} className="svc-sec bg-white">
+    <section id="services" ref={sectionRef} className="svc-sec">
       <div className="svc-stage">
 
         {/* big heading — stays put in the background on desktop */}
