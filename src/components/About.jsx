@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import DotField from './DotField'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -66,9 +67,10 @@ export default function About() {
       <div
         ref={pinRef}
         className="about-pin"
-        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}
+        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', position: 'relative', overflow: 'hidden' }}
       >
-        <div style={pgStyle}>
+        <DotField />
+        <div style={{ ...pgStyle, position: 'relative', zIndex: 1 }}>
 
           <p className="eyebrow" style={{ marginBottom: '2.5rem' }}>
             Our story

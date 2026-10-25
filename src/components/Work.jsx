@@ -44,6 +44,7 @@ export default function Work() {
     })
     gsap.from('.work-card', {
       y: 40, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out',
+      clearProps: 'transform,opacity', // only drop the tween's styles; keeps each card's background colour
       scrollTrigger: { trigger: row, start: 'top 85%' },
     })
 
@@ -113,12 +114,8 @@ export default function Work() {
         {projects.map((p, i) => (
           <div
             key={i}
-            className="work-card rounded-2xl"
-            style={{
-              backgroundColor: p.bg,
-              border: '1.5px solid',
-              borderColor: p.dark ? '#2e2e2e' : '#e8e8e8',
-            }}
+            className={`work-card rounded-2xl${p.dark ? ' is-dark' : ''}`}
+            style={{ backgroundColor: p.bg }}
           >
             <div>
               <span

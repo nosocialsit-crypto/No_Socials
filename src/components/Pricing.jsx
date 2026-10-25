@@ -85,6 +85,7 @@ export default function Pricing() {
     })
     gsap.from('.price-card', {
       y: 40, opacity: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out',
+      clearProps: 'all', // drop inline transforms after the fade-in so CSS hover works
       scrollTrigger: { trigger: '.pricing-grid', start: 'top 85%' },
     })
   }, { scope: sectionRef })
@@ -156,7 +157,7 @@ export default function Pricing() {
                     rel="noopener noreferrer"
                     className="price-card__cta"
                   >
-                    Get {p.name} <span aria-hidden="true">→</span>
+                    Get {p.name} <span className="price-card__arrow" aria-hidden="true">→</span>
                   </a>
                 </div>
               </div>

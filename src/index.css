@@ -55,6 +55,101 @@ body {
   padding-bottom: 4rem;
 }
 
+/* hero second panel: under the heading on small screens, layered on top of it on desktop
+   (hidden until the scroll animation swipes it in) */
+.hero-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 4rem;
+  text-align: center;
+}
+/* the panel's own buttons only show on desktop, where the first pair swipes away */
+.hero-panel__cta { display: none; }
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .hero-panel__cta { display: flex; }
+  .hero-panel {
+    position: absolute;
+    inset: 0;
+    margin-top: 0;
+    justify-content: flex-start; /* top padding is set in Hero.jsx to sit under "Ironically." */
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* services: stacked grid on small screens; on desktop the heading sits fixed in the
+   middle and the card track scrolls up over it (driven by GSAP in Services.jsx) */
+.svc-sec {
+  padding-top: 4rem;
+  padding-bottom: 3rem;
+}
+.svc-heading { margin-bottom: 2.5rem; }
+.svc-title { font-size: clamp(2rem, 4vw, 3.2rem); }
+.svc-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .svc-track { grid-template-columns: repeat(2, 1fr); }
+}
+.svc-card {
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  border: 1.5px solid #EDEDED;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 60px -30px rgba(232, 38, 74, 0.35);
+}
+.svc-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .svc-sec { padding: 0; }
+  .svc-stage {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .svc-heading {
+    position: absolute;
+    inset: 73px 0 0; /* below the fixed navbar */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .svc-title { font-size: clamp(3.5rem, 7.5vw, 8rem); line-height: 1.05; }
+  .svc-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: block;
+    z-index: 1;
+  }
+  .svc-card { width: min(440px, 42%); }
+  .svc-card:nth-child(odd) { margin-right: auto; }
+  .svc-card:nth-child(even) { margin-left: auto; }
+  .svc-card + .svc-card { margin-top: -4rem; }
+}
+
 /* about: no forced full-screen height on small screens (not pinned there) */
 .about-pin {
   padding-top: 4rem;
@@ -75,6 +170,9 @@ body {
   scroll-snap-type: x mandatory;
   scroll-padding-left: var(--row-pad);
   padding: 0 var(--row-pad) 3rem;
+  /* room above the cards so the hover lift isn't clipped by the scroll box */
+  padding-top: 12px;
+  margin-top: -12px;
   cursor: grab;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
@@ -94,6 +192,42 @@ body {
   flex-direction: column;
   justify-content: space-between;
   scroll-snap-align: start;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1.5px solid #e8e8e8;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.work-card.is-dark { border-color: #2e2e2e; }
+/* same hover as the pricing cards: lift, brand glow, shine sweep */
+.work-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+  transform: skewX(-20deg);
+}
+.work-card.is-dark::after {
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
+}
+.work-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(232, 38, 74, 0.35);
+  box-shadow: 0 24px 50px -18px rgba(232, 38, 74, 0.45);
+}
+.work-card:hover::after {
+  left: 130%;
+  transition: left 0.8s ease;
+}
+.work-row.is-dragging .work-card:hover { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .work-card:hover { transform: none; }
+  .work-card::after { display: none; }
 }
 .work-arrow {
   width: 48px;
@@ -130,19 +264,53 @@ body {
   border: 1.5px solid #E8E8E8;
   background: #FFFFFF;
   color: #1A1A1A;
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
   cursor: pointer;
   outline: none;
-  transition: translate 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
-.price-card:hover { border-color: rgba(232, 38, 74, 0.35); }
+/* shine: a soft diagonal light that sweeps across on hover */
+.price-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+  transform: skewX(-20deg);
+}
+.price-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(232, 38, 74, 0.35);
+  box-shadow: 0 24px 50px -18px rgba(232, 38, 74, 0.45);
+}
+.price-card:hover::after {
+  left: 130%;
+  transition: left 0.8s ease;
+}
 .price-card:focus-visible { box-shadow: 0 0 0 3px rgba(232, 38, 74, 0.35); }
 .price-card.is-active {
   background: linear-gradient(150deg, #F47B5B 0%, #E8264A 100%);
   border-color: transparent;
   color: #FFFFFF;
-  translate: 0 -10px; /* separate from transform so the GSAP fade-in can't override it */
   box-shadow: 0 24px 50px -16px rgba(232, 38, 74, 0.55);
+}
+.price-card.is-active:hover {
+  box-shadow: 0 30px 60px -16px rgba(232, 38, 74, 0.7);
+}
+.price-card__arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.price-card:hover .price-card__arrow { transform: translateX(5px); }
+@media (prefers-reduced-motion: reduce) {
+  .price-card:hover { transform: none; }
+  .price-card::after { display: none; }
 }
 .price-card__badge {
   padding: 10px;

@@ -25,19 +25,20 @@ export default function Navbar() {
     >
       <div
         className="pg flex items-center justify-between"
-        style={{ paddingTop: '14px', paddingBottom: '14px' }}
+        style={{ paddingTop: '14px', paddingBottom: '14px', maxWidth: '1440px' }}
       >
         <img src="/logo.png" alt="Nosocials" className="h-11 w-auto" />
 
-        <ul className="hidden md:flex items-center gap-10 text-sm font-medium text-black">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a href={l.href} className="hover:text-coral transition-colors">{l.label}</a>
-            </li>
-          ))}
-        </ul>
+        {/* links + button grouped on the right, centre left empty */}
+        <div className="flex items-center gap-3 md:gap-8">
+          <ul className="hidden md:flex items-center gap-10 text-sm font-medium text-black">
+            {links.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className="hover:text-coral transition-colors">{l.label}</a>
+              </li>
+            ))}
+          </ul>
 
-        <div className="flex items-center gap-3">
           <a
             href={whatsappLink("Hi Nosocials! I'd like to get started with your social media services.")}
             target="_blank"
@@ -79,7 +80,7 @@ export default function Navbar() {
       >
         <ul
           className="pg flex flex-col text-base font-medium text-black border-t border-black/5"
-          style={{ paddingTop: '8px', paddingBottom: '16px' }}
+          style={{ paddingTop: '8px', paddingBottom: '16px', maxWidth: '1440px' }}
         >
           {links.map((l) => (
             <li key={l.href}>
