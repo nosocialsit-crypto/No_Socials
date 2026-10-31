@@ -41,7 +41,7 @@ const plans = [
     ],
   },
   {
-    badge: 'Premium',
+    badge: 'Add-On',
     label: 'Starting at',
     name: 'Website & App Building',
     price: '₹6,999',

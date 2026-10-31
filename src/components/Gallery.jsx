@@ -8,17 +8,17 @@ import 'gsap/EasePack'
 gsap.registerPlugin(ScrollTrigger, Flip)
 
 // gallery media (compressed; raw files live in /media-originals)
-const CENTRE = '/centre.mp4' // the tile that fills the screen first
+const CENTRE = '/centre1.mp4' // the tile that fills the screen first
 const images = [
   '/bike.webp',
   // '/r15.webp',
-  '/coffee.mp4',
+  '/coffee1.mp4',
   CENTRE,
   '/bts.mp4',
   '/cardimg.webp',
   '/phonescroll.mp4',
   '/eyes.mp4',
-  '/gif.mp4',
+  '/gif1.mp4',
 ]
 const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src)
 
