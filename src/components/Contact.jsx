@@ -29,7 +29,7 @@ const EVENT_TYPES = [
   'Other',
 ]
 
-const EMAIL = 'nosocials.it@gmail.com'
+const EMAIL = 'nosocials.in@gmail.com'
 
 const pgStyle = {
   width: '100%',

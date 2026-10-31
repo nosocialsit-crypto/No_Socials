@@ -67,8 +67,8 @@ const companyLinks = ['Services', 'About', 'Pricing', 'Work']
 
 const contactLinks = [
   { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi NoSocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true },
-  { label: 'nosocials.it@gmail.com', href: 'mailto:nosocials.it@gmail.com', Icon: MailIcon },
-  { label: 'Instagram', href: '#', Icon: InstagramIcon },
+  { label: 'nosocials.in@gmail.com', href: 'mailto:nosocials.in@gmail.com', Icon: MailIcon },
+  { label: 'Instagram', href: 'https://www.instagram.com/nosocials.in?dlrf=MWVsY2E3Mzk0eGc1cw==', Icon: InstagramIcon },
   { label: 'LinkedIn', href: '#', Icon: LinkedInIcon },
 ]
 
