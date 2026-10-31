@@ -6,10 +6,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const services = [
-  { number: '01', title: 'Content Creation',     desc: 'Scroll-stopping visuals, captions, and reels crafted for your brand voice.' },
-  { number: '02', title: 'Strategy & Growth',    desc: 'Data-backed plans that turn followers into customers, consistently.' },
-  { number: '03', title: 'Community Management', desc: 'We respond, engage, and build relationships — daily, in your tone.' },
-  { number: '04', title: 'Paid Social Ads',      desc: 'Targeted campaigns across Instagram, TikTok, and LinkedIn that convert.' },
+  { number: '01', title: 'Content Creation',       desc: 'Scroll-stopping visuals, captions, and reels crafted for your brand voice.' },
+  { number: '02', title: 'Strategy & Growth',      desc: 'Data-backed plans that turn followers into customers, consistently.' },
+  { number: '03', title: 'Graphic Designer',       desc: 'Visual branding, social media graphics, and custom illustrations that make you stand out.' },
+  { number: '04', title: 'App & Website Building', desc: 'Full-stack development of modern, responsive websites and mobile apps that drive conversions.' },
+  { number: '05', title: 'Paid Social Ads',        desc: 'Targeted campaigns across Instagram, TikTok, and LinkedIn that convert.' },
+  { number: '06', title: 'SEO Optimization',       desc: 'Boost your organic visibility and rank higher on search engines.' },
 ]
 
 export default function Services() {

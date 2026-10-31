@@ -661,8 +661,14 @@ body {
   background-size: cover;
   flex: none;
   position: relative;
+  overflow: hidden; /* keep media inside its tile */
 }
-.gallery__item img {
+/* absolute so the video's own size never stretches the tile */
+.gallery__item img,
+.gallery__item video {
+  position: absolute;
+  inset: 0;
+  display: block;
   object-fit: cover;
   width: 100%;
   height: 100%;

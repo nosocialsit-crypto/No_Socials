@@ -7,9 +7,9 @@ import DotField from './DotField'
 gsap.registerPlugin(ScrollTrigger)
 
 const stats = [
-  { value: '50+', label: 'Brands managed' },
-  { value: '3.2M', label: 'Followers grown' },
-  { value: '98%',  label: 'Client retention' },
+  { value: '10+', label: 'Cities / Regions Reached' },
+  { value: '10M+', label: 'Viewers Reached' },
+  { value: '+950%',  label: 'Peak Growth' },
 ]
 
 const lines = [

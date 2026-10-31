@@ -178,7 +178,7 @@ export default function Hero() {
             ref={badgeRef}
             className="eyebrow"
           >
-            Social Media Agency
+            Brand Strategist
           </span>
 
           <h1

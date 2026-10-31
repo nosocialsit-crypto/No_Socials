@@ -7,17 +7,20 @@ import 'gsap/EasePack'
 
 gsap.registerPlugin(ScrollTrigger, Flip)
 
-// placeholder images — swap for real assets before going live
+// gallery media (compressed; raw files live in /media-originals)
+const CENTRE = '/centre.mp4' // the tile that fills the screen first
 const images = [
-  'https://assets.codepen.io/16327/portrait-pattern-1.jpg',
-  'https://assets.codepen.io/16327/portrait-image-12.jpg',
-  'https://assets.codepen.io/16327/portrait-image-8.jpg',
-  'https://assets.codepen.io/16327/portrait-pattern-2.jpg',
-  'https://assets.codepen.io/16327/portrait-image-4.jpg',
-  'https://assets.codepen.io/16327/portrait-image-3.jpg',
-  'https://assets.codepen.io/16327/portrait-pattern-3.jpg',
-  'https://assets.codepen.io/16327/portrait-image-1.jpg',
+  '/bike.webp',
+  // '/r15.webp',
+  '/coffee.mp4',
+  CENTRE,
+  '/bts.mp4',
+  '/cardimg.webp',
+  '/phonescroll.mp4',
+  '/eyes.mp4',
+  '/gif.mp4',
 ]
+const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src)
 
 export default function Gallery() {
   const wrapRef = useRef(null)
@@ -70,9 +73,37 @@ export default function Gallery() {
     }
     window.addEventListener('resize', onResize)
 
+    // only play videos while they're on screen (saves CPU and battery)
+    const visible = new Set()
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) {
+          visible.add(target)
+          if (target.src) target.play().catch(() => {})
+        } else {
+          visible.delete(target)
+          target.pause()
+        }
+      })
+    })
+    gallery.querySelectorAll('video').forEach((v) => io.observe(v))
+
+    // the other tiles start off-screen, so fetch their media only once the visitor scrolls
+    const loadRest = () => {
+      gallery.querySelectorAll('[data-src]').forEach((el) => {
+        el.src = el.dataset.src
+        el.removeAttribute('data-src')
+        if (el.tagName === 'VIDEO' && visible.has(el)) el.play().catch(() => {})
+      })
+    }
+    if (window.scrollY > 0) loadRest()
+    else window.addEventListener('scroll', loadRest, { passive: true, once: true })
+
     return () => {
       clearTimeout(timer)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('scroll', loadRest)
+      io.disconnect()
       flipCtx?.revert()
     }
   }, { scope: wrapRef })
@@ -82,7 +113,14 @@ export default function Gallery() {
       <div ref={galleryRef} className="gallery gallery--bento gallery--final">
         {images.map((src) => (
           <div key={src} className="gallery__item">
-            <img src={src} alt="" loading="eager" />
+            {src === CENTRE ? (
+              // muted + playsInline are required for autoplay on mobile
+              <video src={src} poster="/centre-poster.webp" autoPlay loop muted playsInline preload="auto" />
+            ) : isVideo(src) ? (
+              <video data-src={src} loop muted playsInline preload="auto" />
+            ) : (
+              <img data-src={src} alt="" decoding="async" />
+            )}
           </div>
         ))}
       </div>

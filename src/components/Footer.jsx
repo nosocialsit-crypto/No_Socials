@@ -149,8 +149,11 @@ export default function Footer() {
           {/* brand */}
           <div className="ft-reveal">
             <img
-              src="/logo.png"
+              src="/hdlogo.webp"
               alt="Nosocials"
+              width="330"
+              height="132"
+              loading="lazy"
               className="brightness-0 invert"
               style={{ height: '2rem', width: 'auto', marginBottom: '1.5rem' }}
             />

@@ -10,47 +10,51 @@ gsap.registerPlugin(ScrollTrigger)
 const plans = [
   {
     badge: 'Most popular',
+    label: 'Up to 1 hour shoot',
+    name: 'Quick Reel',
+    price: '₹1,999',
+    per: '/reel', // one-off shoot, not monthly
+    cta: 'Book Quick Reel',
+    quote: 'For moments that deserve to be shared, instantly.',
+    features: [
+      'A focused shoot built around one key moment',
+      'One polished, high-quality reel made for Instagram & social',
+      'Trending audio, captions & smooth transitions',
+      'Delivered fast, so your moment stays fresh',
+      'Handled by trained Nosocials creators',
+    ],
+  },
+  {
+    badge: 'Best value',
     label: 'Per month',
     name: 'Starter',
     price: '₹14,999',
     quote: 'For brands ready to show up on social, consistently.',
     features: [
       '2 platforms managed',
-      '12 posts every month',
-      '4 short-form reels',
+      '12-15 posts every month',  
+      '4-5 reels',
+      '7-10 static post',
+      '15-30 stories',
       'Captions & hashtag research',
       'Monthly performance report',
     ],
   },
   {
-    badge: 'Best value',
-    label: 'Per month',
-    name: 'Growth',
-    price: '₹29,999',
-    quote: 'For brands that want to grow reach and followers fast.',
-    features: [
-      '3 platforms managed',
-      '20 posts every month',
-      '8 short-form reels',
-      'Content calendar & strategy',
-      'Daily community management',
-      'Bi-weekly performance reports',
-    ],
-  },
-  {
     badge: 'Premium',
-    label: 'Per month',
-    name: 'Scale',
-    price: '₹59,999',
-    quote: 'Full-service social, handled end to end.',
+    label: 'Starting at',
+    name: 'Website & App Building',
+    price: '₹6,999',
+    per: '', // one-time project, not monthly
+    cta: 'Build my site',
+    quote: 'A fast, modern website or app built for your brand.',
     features: [
-      'All major platforms managed',
-      '30 posts every month',
-      '15 short-form reels',
-      'Dedicated account manager',
-      'Paid ads management',
-      'Influencer outreach',
-      'Weekly reports & strategy calls',
+      'Custom UI/UX design',
+      'Responsive website or mobile app',
+      'SEO-ready & fast loading',
+      'Contact forms & WhatsApp integration',
+      'Hosting & domain setup (pricing excluded)',
+      '1 month free support',
     ],
   },
 ]
@@ -75,7 +79,7 @@ function Check({ active }) {
 
 export default function Pricing() {
   const sectionRef = useRef(null)
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(1) // Starter (middle card) highlighted by default
 
   useGSAP(() => {
     const heading = sectionRef.current.querySelector('.pricing-heading')
@@ -136,7 +140,7 @@ export default function Pricing() {
                   </h3>
                   <div className="font-black" style={{ fontSize: 'clamp(2.25rem, 3.5vw, 2.75rem)', marginTop: '1rem', lineHeight: 1 }}>
                     {p.price}
-                    <span className="price-card__per">/mo</span>
+                    {(p.per ?? '/mo') && <span className="price-card__per">{p.per ?? '/mo'}</span>}
                   </div>
                   <p className="price-card__quote">“{p.quote}”</p>
 
@@ -152,12 +156,16 @@ export default function Pricing() {
                   </ul>
 
                   <a
-                    href={whatsappLink(`Hi Nosocials! I'm interested in the ${p.name} plan (${p.price}/month).`)}
+                    href={whatsappLink(
+                      p.per === ''
+                        ? `Hi Nosocials! I'm interested in ${p.name} (starting at ${p.price}).`
+                        : `Hi Nosocials! I'm interested in the ${p.name} plan (${p.price}${p.per ?? '/month'}).`
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="price-card__cta"
                   >
-                    Get {p.name} <span className="price-card__arrow" aria-hidden="true">→</span>
+                    {p.cta ?? `Get ${p.name}`} <span className="price-card__arrow" aria-hidden="true">→</span>
                   </a>
                 </div>
               </div>

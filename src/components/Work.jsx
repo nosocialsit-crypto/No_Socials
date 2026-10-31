@@ -6,11 +6,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
-  { tag: 'Instagram',      title: 'Brew & Bloom',    result: '+42K followers in 3 months',    bg: '#FFF5F2', dark: false },
-  { tag: 'TikTok',         title: 'Drift Apparel',   result: '1.2M views on launch reel',     bg: '#FFF0F3', dark: false },
-  { tag: 'LinkedIn',       title: 'Stackr Finance',  result: '3× inbound leads from content', bg: '#1A1A1A', dark: true  },
-  { tag: 'Multi-platform', title: 'Solara Skincare', result: '98% engagement rate increase',  bg: '#F5F5F5', dark: false },
-  { tag: 'Instagram',      title: 'Kura Studios',    result: '0 to 25K in 60 days',           bg: '#FFF5F2', dark: false },
+  { tag: 'Instagram', title: 'KC International Cricket Bats', result: 'The power-hitting reels and content showcased our bats brilliantly, driving a massive spike in direct orders from players!', bg: '#FFF5F2', dark: false },
+  { tag: 'Instagram', title: 'Brunè Café',                   result: 'Their aesthetic food reels and community engagement brought our cozy vibe straight to local feed screens, filling up our tables.', bg: '#FFF0F3', dark: false },
+  { tag: 'Instagram', title: 'Urban Soffit',                 result: 'They captured our architectural designs with stunning precision, turning our projects into major talking points online.', bg: '#1A1A1A', dark: true },
+  { tag: 'Instagram', title: 'Chai Kaapi Hinjewadi',         result: 'That single viral reel brought in a massive wave of chai lovers right through our doors. Absolutely stellar work!', bg: '#F5F5F5', dark: false },
+  { tag: 'Instagram', title: 'Yash Dixit',                   result: 'The corporate event reel captured the exact energy and professionalism we wanted to project to our audience.', bg: '#FFF5F2', dark: false },
 ]
 
 const pgStyle = {
@@ -136,13 +136,13 @@ export default function Work() {
                 {p.title}
               </h3>
               <p
-                className="leading-relaxed"
+                className="leading-relaxed italic"
                 style={{
-                  fontSize: '14px',
-                  color: p.dark ? 'rgba(255,255,255,0.55)' : '#9A9A9A',
+                  fontSize: '15px',
+                  color: p.dark ? 'rgba(255,255,255,0.7)' : '#6B6B6B',
                 }}
               >
-                {p.result}
+                “{p.result}”
               </p>
             </div>
             <div className="brand-gradient" style={{ width: '2rem', height: '1px', marginTop: '2rem' }} />

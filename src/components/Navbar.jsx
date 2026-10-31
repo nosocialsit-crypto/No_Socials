@@ -27,7 +27,7 @@ export default function Navbar() {
         className="pg flex items-center justify-between"
         style={{ paddingTop: '14px', paddingBottom: '14px', maxWidth: '1440px' }}
       >
-        <img src="/logo.png" alt="Nosocials" className="h-11 w-auto" />
+        <img src="/hdlogo.webp" alt="Nosocials" width="330" height="132" fetchPriority="high" className="h-11 w-auto" />
 
         {/* links + button grouped on the right, centre left empty */}
         <div className="flex items-center gap-3 md:gap-8">

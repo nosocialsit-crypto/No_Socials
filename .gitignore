@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# raw phone media (web-ready copies live in public/)
+media-originals
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
