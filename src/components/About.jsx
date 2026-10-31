@@ -13,7 +13,7 @@ const stats = [
 ]
 
 const lines = [
-  'We started Nosocials because we were tired of brands treating social media like a checkbox.',
+  'We started NoSocials because we were tired of brands treating social media like a checkbox.',
   'Every post, reel, and story we make is built around one thing — your audience actually caring.',
   'No fluff. No vanity metrics. Just real growth, done with intention.',
 ]

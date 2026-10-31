@@ -103,7 +103,7 @@ export default function Contact() {
     e.preventDefault()
     const f = Object.fromEntries(new FormData(e.currentTarget))
     const lines = [
-      'Hi Nosocials! New enquiry from the website 👋',
+      'Hi NoSocials! New enquiry from the website 👋',
       '',
       `Name: ${f.name.trim()}`,
       `Phone: ${f.phone.trim()}`,
@@ -140,7 +140,7 @@ export default function Contact() {
               {EMAIL}
             </a>
             <a
-              href={whatsappLink("Hi Nosocials! I'd like to know more about your services.")}
+              href={whatsappLink("Hi NoSocials! I'd like to know more about your services.")}
               target="_blank"
               rel="noopener noreferrer"
               className="bk-contact"

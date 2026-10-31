@@ -66,7 +66,7 @@ const ArrowUpIcon = () => (
 const companyLinks = ['Services', 'About', 'Pricing', 'Work']
 
 const contactLinks = [
-  { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi Nosocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true },
+  { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi NoSocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true },
   { label: 'nosocials.it@gmail.com', href: 'mailto:nosocials.it@gmail.com', Icon: MailIcon },
   { label: 'Instagram', href: '#', Icon: InstagramIcon },
   { label: 'LinkedIn', href: '#', Icon: LinkedInIcon },
@@ -74,7 +74,7 @@ const contactLinks = [
 
 const year = new Date().getFullYear()
 
-const marqueeWords = ['nosocials', 'ironically', 'strategy', 'content', 'growth']
+const marqueeWords = ['NoSocials', 'ironically', 'strategy', 'content', 'growth']
 
 export default function Footer() {
   const footerRef = useRef(null)
@@ -126,7 +126,7 @@ export default function Footer() {
             </h2>
           </div>
           <a
-            href={whatsappLink("Hi Nosocials! I'd like to start a project with you.")}
+            href={whatsappLink("Hi NoSocials! I'd like to start a project with you.")}
             target="_blank"
             rel="noopener noreferrer"
             className="ft-cta brand-gradient text-white font-semibold rounded-full whitespace-nowrap self-start md:self-auto"
@@ -150,7 +150,7 @@ export default function Footer() {
           <div className="ft-reveal">
             <img
               src="/hdlogo.webp"
-              alt="Nosocials"
+              alt="NoSocials"
               width="330"
               height="132"
               loading="lazy"
@@ -243,7 +243,7 @@ export default function Footer() {
           }}
         >
           <p className="text-white text-center md:text-left" style={{ fontSize: '12px', opacity: 0.3 }}>
-            © {year} Nosocials. Ironically managing your socials.
+            © {year} NoSocials. Ironically managing your socials.
           </p>
           <button type="button" onClick={scrollToTop} className="ft-top">
             Back to top

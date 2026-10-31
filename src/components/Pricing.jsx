@@ -21,23 +21,23 @@ const plans = [
       'One polished, high-quality reel made for Instagram & social',
       'Trending audio, captions & smooth transitions',
       'Delivered fast, so your moment stays fresh',
-      'Handled by trained Nosocials creators',
+      'Handled by trained NoSocials creators',
     ],
   },
   {
     badge: 'Best value',
-    label: 'Per month',
+    label: 'Per month with shoot',
     name: 'Starter',
     price: '₹14,999',
     quote: 'For brands ready to show up on social, consistently.',
     features: [
-      '2 platforms managed',
-      '12-15 posts every month',  
-      '4-5 reels',
-      '7-10 static post',
-      '15-30 stories',
-      'Captions & hashtag research',
+      '2 Platforms managed',
+      '12-15 Posts every month',  
+      '4-5 Reels',
+      '7-10 Static Post',
+      '15-30 Stories',
       'Monthly performance report',
+      'Contact for without shoot pricing',
     ],
   },
   {
@@ -158,8 +158,8 @@ export default function Pricing() {
                   <a
                     href={whatsappLink(
                       p.per === ''
-                        ? `Hi Nosocials! I'm interested in ${p.name} (starting at ${p.price}).`
-                        : `Hi Nosocials! I'm interested in the ${p.name} plan (${p.price}${p.per ?? '/month'}).`
+                        ? `Hi NoSocials! I'm interested in ${p.name} (starting at ${p.price}).`
+                        : `Hi NoSocials! I'm interested in the ${p.name} plan (${p.price}${p.per ?? '/month'}).`
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -177,7 +177,7 @@ export default function Pricing() {
         <div className="pricing-note">
           Need something custom: a product launch, one-off campaign, or multiple brands?{' '}
           <a
-            href={whatsappLink("Hi Nosocials! I'd like to discuss a custom plan.")}
+            href={whatsappLink("Hi NoSocials! I'd like to discuss a custom plan.")}
             target="_blank"
             rel="noopener noreferrer"
             className="brand-gradient-text font-bold"
