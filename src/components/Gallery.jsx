@@ -138,7 +138,7 @@ export default function Gallery() {
               // muted + playsInline are required for autoplay on mobile
               <video
                 src={isLaptop ? CENTRE_LAPTOP : CENTRE_MOBILE}
-                poster={isLaptop ? '/centrelap-poster.webp' : '/centremob-poster.webp'}
+                poster={isLaptop ? '/centre1-poster.webp' : '/centremob-poster.webp'}
                 autoPlay loop muted playsInline preload="auto" />
             ) : isVideo(src) ? (
               <video data-src={src} loop muted playsInline preload="auto" />
