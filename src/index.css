@@ -696,6 +696,40 @@ body {
 .gallery--bento .gallery__item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
 .gallery--bento .gallery__item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
 
+/* scroll hint over the first-screen video (dark pill: the video is mostly white) */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.scroll-hint__arrow {
+  color: #e8264a;
+  animation: scroll-hint-bounce 1.4s ease-in-out infinite;
+}
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint__arrow { animation: none; }
+}
+
 /* ── footer ── */
 .ft-glow {
   position: absolute;

@@ -29,6 +29,7 @@ const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src)
 export default function Gallery() {
   const wrapRef = useRef(null)
   const galleryRef = useRef(null)
+  const hintRef = useRef(null)
   const [isLaptop, setIsLaptop] = useState(() => window.matchMedia(LAPTOP_QUERY).matches)
 
   // switch the centre video when the screen crosses the laptop breakpoint (e.g. tablet rotation)
@@ -74,6 +75,13 @@ export default function Gallery() {
     }
 
     build()
+
+    // "Scroll" hint fades out over the first ~120px of scrolling, returns at the top
+    gsap.to(hintRef.current, {
+      autoAlpha: 0,
+      ease: 'none',
+      scrollTrigger: { start: 0, end: 120, scrub: true },
+    })
 
     // rebuild on width changes only — mobile address bars fire height-only resizes constantly
     let lastWidth = window.innerWidth
@@ -139,6 +147,13 @@ export default function Gallery() {
             )}
           </div>
         ))}
+      </div>
+      {/* tells first-time visitors there's more below the full-screen video */}
+      <div ref={hintRef} className="scroll-hint" aria-hidden="true">
+        Scroll
+        <svg className="scroll-hint__arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
       </div>
     </div>
   )
