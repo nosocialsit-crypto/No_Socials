@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger, Flip)
 // gallery media (compressed; raw files live in /media-originals)
 const CENTRE = 'centre' // the tile that fills the screen first
 // the centre video differs by device: laptop/desktop vs mobile + tablet
-const CENTRE_LAPTOP = '/centrelap.mp4'
+const CENTRE_LAPTOP = '/centre1.mp4'
 const CENTRE_MOBILE = '/centremob.mp4'
 const LAPTOP_QUERY = '(min-width: 1024px)'
 const images = [
