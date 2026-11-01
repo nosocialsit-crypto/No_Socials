@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 const stats = [
   { value: '10+', label: 'Cities / Regions Reached' },
   { value: '10M+', label: 'Viewers Reached' },
-  { value: '+950%',  label: 'Peak Growth' },
+  { value: '950%',  label: 'Peak Growth' },
 ]
 
 const lines = [
