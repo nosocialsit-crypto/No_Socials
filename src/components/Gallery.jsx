@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -8,7 +8,11 @@ import 'gsap/EasePack'
 gsap.registerPlugin(ScrollTrigger, Flip)
 
 // gallery media (compressed; raw files live in /media-originals)
-const CENTRE = '/centre1.mp4' // the tile that fills the screen first
+const CENTRE = 'centre' // the tile that fills the screen first
+// the centre video differs by device: laptop/desktop vs mobile + tablet
+const CENTRE_LAPTOP = '/centrelap.mp4'
+const CENTRE_MOBILE = '/centremob.mp4'
+const LAPTOP_QUERY = '(min-width: 1024px)'
 const images = [
   '/bike.webp',
   // '/r15.webp',
@@ -25,6 +29,15 @@ const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src)
 export default function Gallery() {
   const wrapRef = useRef(null)
   const galleryRef = useRef(null)
+  const [isLaptop, setIsLaptop] = useState(() => window.matchMedia(LAPTOP_QUERY).matches)
+
+  // switch the centre video when the screen crosses the laptop breakpoint (e.g. tablet rotation)
+  useEffect(() => {
+    const mq = window.matchMedia(LAPTOP_QUERY)
+    const onChange = (e) => setIsLaptop(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
 
   useGSAP(() => {
     const gallery = galleryRef.current
@@ -115,7 +128,10 @@ export default function Gallery() {
           <div key={src} className="gallery__item">
             {src === CENTRE ? (
               // muted + playsInline are required for autoplay on mobile
-              <video src={src} poster="/centre-poster.webp" autoPlay loop muted playsInline preload="auto" />
+              <video
+                src={isLaptop ? CENTRE_LAPTOP : CENTRE_MOBILE}
+                poster={isLaptop ? '/centrelap-poster.webp' : '/centremob-poster.webp'}
+                autoPlay loop muted playsInline preload="auto" />
             ) : isVideo(src) ? (
               <video data-src={src} loop muted playsInline preload="auto" />
             ) : (

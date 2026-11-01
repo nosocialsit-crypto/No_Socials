@@ -66,10 +66,10 @@ const ArrowUpIcon = () => (
 const companyLinks = ['Services', 'About', 'Pricing', 'Work']
 
 const contactLinks = [
-  { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi NoSocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true },
+  { label: WHATSAPP_DISPLAY, href: whatsappLink("Hi NoSocials! I'd like to know more about your services."), Icon: WhatsAppIcon, external: true, newTab: true },
   { label: 'nosocials.in@gmail.com', href: 'mailto:nosocials.in@gmail.com', Icon: MailIcon },
-  { label: 'Instagram', href: 'https://www.instagram.com/nosocials.in?dlrf=MWVsY2E3Mzk0eGc1cw==', Icon: InstagramIcon },
-  { label: 'LinkedIn', href: '#', Icon: LinkedInIcon },
+  { label: 'Instagram', href: 'https://www.instagram.com/nosocials.in?dlrf=MWVsY2E3Mzk0eGc1cw==', Icon: InstagramIcon, newTab: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/nosocials', Icon: LinkedInIcon, newTab: true },
 ]
 
 const year = new Date().getFullYear()
@@ -161,13 +161,13 @@ export default function Footer() {
               We manage your social media with strategy, creativity, and a little irony.
             </p>
             <div className="flex" style={{ gap: '0.75rem', marginTop: '1.75rem' }}>
-              {contactLinks.map(({ label, href, Icon, external }) => (
+              {contactLinks.map(({ label, href, Icon, external, newTab }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={external ? `WhatsApp ${label}` : label}
                   className="ft-social"
-                  {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                  {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
                 >
                   <Icon />
                 </a>
@@ -198,13 +198,13 @@ export default function Footer() {
               Contact
             </p>
             <ul style={{ listStyle: 'none' }}>
-              {contactLinks.map(({ label, href, Icon, external }) => (
+              {contactLinks.map(({ label, href, Icon, external, newTab }) => (
                 <li key={label} style={{ marginBottom: '0.875rem' }}>
                   <a
                     href={href}
                     className="ft-link"
                     style={{ wordBreak: 'break-all' }}
-                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                    {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
                   >
                     <span className="ft-link-icon"><Icon /></span>
                     <span className="ft-link-text">{label}</span>
